@@ -23,15 +23,19 @@ int main(int argc, char *argv[]){
     }
 
     // Create an event to listen for window events
-    SDL_Event window_event;
+    SDL_Event event;
 
     // Keep the program running until the user closes the window
-    while(true){
-        // Poll for window events
-        if(SDL_PollEvent(&window_event)){
-            // If the user closes the window, exit the program
-            if(window_event.type == SDL_QUIT){
-                break;
+    _Bool running = true;
+    while(running){
+        // Poll and process every events from the event queue
+        while(SDL_POllEvent(&event)){
+            switch(event.type){
+                case SDL_QUIT:
+                    running = false;
+                    break;
+                default:
+                    continue;
             }
         }
     }
