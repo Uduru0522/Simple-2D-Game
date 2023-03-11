@@ -29,7 +29,7 @@ int main(int argc, char *argv[]){
     _Bool running = true;
     while(running){
         // Poll and process every events from the event queue
-        while(SDL_POllEvent(&event)){
+        while(SDL_PollEvent(&event)){
             switch(event.type){
                 case SDL_QUIT:
                     running = false;
