@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "icon.h"
+#include "icons.h"
 
 // Set the width and height of the window
 const int WIDTH = 960, HEIGHT = 540;
