@@ -7,8 +7,9 @@
 const int WIDTH = 960, HEIGHT = 540;
 
 int main(int argc, char *argv[]){
-    // Initialize SDL
+    // Initialize SDL / SDL_Image for .png and .jpg
     SDL_Init(SDL_INIT_EVERYTHING);
+    IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 
     // Create a resizable, maximized, and high-DPI-aware main window
     SDL_Window *window = SDL_CreateWindow("Hello World!", 
@@ -35,9 +36,13 @@ int main(int argc, char *argv[]){
         0x958874, 0x993955, 0x0E3B43, 0xDAF5FF, 0x335145
     };
 
-    // Create icon object
+    // Create icon objects
     struct solid_icon *i = solid_icon_init(100, 100, 100, 100, colors[idx++]);
-    
+    struct img_icon *img = img_icon_init(200, 200, 576, 384, ".\\resources\\chara.png");
+    img_icon_draw(screen, img);
+
+    printf("Ready to loop!\n");
+
     // Keep the program running until the user closes the window
     _Bool running = true;
     while(running){
@@ -62,6 +67,9 @@ int main(int argc, char *argv[]){
     solid_icon_free(i);
     SDL_FreeSurface(screen);
     SDL_DestroyWindow(window);
+
+    // Quit SDL and IMG system
+    IMG_Quit();
     SDL_Quit();
     return 0;
 }
