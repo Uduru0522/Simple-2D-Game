@@ -2,8 +2,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-// Create and initialize a new icon structure.
-struct solid_icon *solid_icon_init(int x, int y, unsigned int w, unsigned int h)
+struct solid_icon *solid_icon_init(int x, int y, unsigned int w, unsigned int h, uint32_t rgba)
 {
     // Allocate memory for icon
     struct solid_icon *new = malloc(sizeof(struct solid_icon));
@@ -42,21 +41,29 @@ struct solid_icon *solid_icon_init(int x, int y, unsigned int w, unsigned int h)
     new->pos->h = h;
 
     // Fill color in RGB Surface
-    SDL_FillRect(new->surface, NULL, 0x958874);
-
+    solid_icon_set(new, rgba);
     return new;
+}
+
+_Bool solid_icon_set(struct solid_icon *dest, uint32_t rgba)
+{
+    // Check if icon is initialized
+    if(dest == NULL || dest->surface == NULL || dest->pos == NULL){
+        printf("Error: solid_icon is not initialized\n");
+        return false;
+    }
+
+    SDL_FillRect(dest->surface, NULL, rgba);
 }
 
 _Bool solid_icon_draw(SDL_Surface *dest, struct solid_icon *icon)
 {
-    if(icon->surface != NULL){
-        SDL_BlitSurface(icon->surface, NULL, dest, icon->pos);
-    }
-    else{
+    if(icon->surface == NULL){
         printf("Error: source surface is NULL\n");
         return false;
     }
-
+    
+    SDL_BlitSurface(icon->surface, NULL, dest, icon->pos);
     return true;
 }
 

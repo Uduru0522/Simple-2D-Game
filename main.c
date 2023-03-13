@@ -24,13 +24,20 @@ int main(int argc, char *argv[]){
 
     // Create surface to draw, assigned to the main window
     SDL_Surface *screen = SDL_GetWindowSurface(window);
+    SDL_FillRect(screen, NULL, 0xFFFFFF);
 
     // Create an event to listen for window events
     SDL_Event event;
 
-    // Create icon object
-    struct solid_icon *i = solid_icon_init(100, 100, 100, 100);
+    // Array for color rotaion
+    int idx = 0;
+    uint32_t colors[] = {
+        0x958874, 0x993955, 0x0E3B43, 0xDAF5FF, 0x335145
+    };
 
+    // Create icon object
+    struct solid_icon *i = solid_icon_init(100, 100, 100, 100, colors[idx++]);
+    
     // Keep the program running until the user closes the window
     _Bool running = true;
     while(running){
@@ -45,9 +52,10 @@ int main(int argc, char *argv[]){
             }
         }
 
-        SDL_FillRect(screen, NULL, 0xFFFFFF);
-        solid_icon_draw(screen, i);
         SDL_UpdateWindowSurface(window);
+        SDL_Delay(500);
+        solid_icon_set(i, colors[idx = (idx + 1) % 5]);
+        solid_icon_draw(screen, i);
     }
 
     // Free all allocated memory and exit
