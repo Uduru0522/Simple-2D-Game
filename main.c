@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "icons.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include "icon.h"
 
 // Set the width and height of the window
 const int WIDTH = 960, HEIGHT = 540;
@@ -36,10 +38,13 @@ int main(int argc, char *argv[]){
         0x958874, 0x993955, 0x0E3B43, 0xDAF5FF, 0x335145
     };
 
-    // Create icon objects
-    struct solid_icon *i = solid_icon_init(100, 100, 100, 100, colors[idx++]);
-    struct img_icon *img = img_icon_init(200, 200, 576, 384, ".\\resources\\chara.png");
-    img_icon_draw(screen, img);
+    // Create solid icon
+    struct icon *i = icon_init(100, 100, 100, 100, ICON_RGBA);
+
+    // Create image icon and draw onto screen
+    struct icon *img = icon_init(200, 200, 576, 384, ICON_IMG);
+    icon_set(img, 0, ".\\resources\\chara.png");
+    icon_draw(screen, img);
 
     printf("Ready to loop!\n");
 
@@ -59,12 +64,13 @@ int main(int argc, char *argv[]){
 
         SDL_UpdateWindowSurface(window);
         SDL_Delay(500);
-        solid_icon_set(i, colors[idx = (idx + 1) % 5]);
-        solid_icon_draw(screen, i);
+        icon_set(i, colors[idx = (idx + 1) % 5], NULL);
+        icon_draw(screen, i);
     }
 
     // Free all allocated memory and exit
-    solid_icon_free(i);
+    icon_free(i);
+    icon_free(img);
     SDL_FreeSurface(screen);
     SDL_DestroyWindow(window);
 
