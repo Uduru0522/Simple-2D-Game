@@ -3,4 +3,4 @@ A simple game using C and the SDL2 Library.
 
 ### Requirements:
 + Windows
-+ mingw32, and its path set within global variables.
++ MinGW, providing GCC & `libmingw32.a`.
