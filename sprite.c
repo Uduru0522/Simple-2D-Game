@@ -30,6 +30,9 @@ struct sprite *sprite_init(int x, int y, unsigned int w, unsigned int h)
     sprite->pos->w = w;
     sprite->pos->h = h;
 
+    // Initialize rotation angle
+    sprite->angle = 0;
+
     return sprite;
 }
 
@@ -75,14 +78,43 @@ _Bool sprite_set_texture(struct sprite *target, const char *path)
 
 _Bool sprite_draw(struct sprite *target)
 {
-    // Check if texture is set
-    if(target->texture == NULL){
-        printf("Error in sprite_draw(): Texture not set\n");
-        return false;
-    }
+    SPRITE_CHECK_USEABLE(target, return false);
 
     // Render texture onto renderer
-    SDL_RenderCopy(target->renderer, target->texture, NULL, target->pos);
+    SDL_Point *pivot = NULL;
+    SDL_RenderCopyEx(target->renderer, target->texture,
+                     NULL, target->pos, target->angle, pivot, SDL_FLIP_NONE);
+    return true;
+}
+
+void sprite_set_pos(struct sprite *target, int x, int y){
+    SPRITE_CHECK_USEABLE(target, return);
+
+    // Set postion of sprite
+    target->pos->x = x;
+    target->pos->y = y;
+}
+
+void sprite_set_size(struct sprite *target, unsigned int w, unsigned int h)
+{   
+    SPRITE_CHECK_USEABLE(target, return);
+
+    // Set dimension of sprite
+    target->pos->w = w;
+    target->pos->h = h;
+    return;
+}
+
+_Bool sprite_set_deg(struct sprite *target, double angle)
+{
+    SPRITE_CHECK_USEABLE(target, return false);
+
+    // Increment rotation value
+    target->angle += angle;
+    if(target->angle > 360.0){
+        target->angle -= 360;
+    }
+    return true;
 }
 
 void sprite_free(struct sprite *target)

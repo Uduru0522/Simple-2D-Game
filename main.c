@@ -25,16 +25,19 @@ int main(int argc, char *argv[]){
         return -1;
     }
 
-    // Create renderer for full window
+    // Create renderer for full window and set background color
     SDL_Renderer *screen = SDL_CreateRenderer(window, -1, 0);
+    SDL_SetRenderDrawColor(screen, 255, 255, 255, SDL_ALPHA_OPAQUE);
 
     // Create an event to listen for window events
     SDL_Event event;
 
     // Create sprite and set renderer
-    struct sprite *s = sprite_init(200, 200, 1152, 768);
+    struct sprite *s = sprite_init(200, 200, 128, 128);
+    double angle_increment = 0.1;
     sprite_set_renderer(s, screen);
     sprite_set_texture(s, ".\\resources\\chara.png");
+    sprite_draw(s);
 
     // Keep the program running until the user closes the window
     _Bool running = true;
@@ -50,9 +53,12 @@ int main(int argc, char *argv[]){
             }
         }
 
+        SDL_RenderClear(screen);
+        sprite_set_size(s, s->pos->w + 1, s->pos->h + 1);
+        sprite_set_deg(s, angle_increment);
         sprite_draw(s);
         SDL_RenderPresent(screen);
-        SDL_Delay(500);
+        SDL_Delay(5);
     }
 
     // Free all allocated memory and exit
