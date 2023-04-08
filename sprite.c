@@ -7,33 +7,33 @@
 struct sprite *sprite_init(int x, int y, unsigned int w, unsigned int h)
 {
     // Allocate memory for sprite
-    struct sprite *sprite = malloc(sizeof(struct sprite));
-    if(sprite == NULL){
+    struct sprite *s = malloc(sizeof(struct sprite));
+    if(s == NULL){
         printf("Error in sprite_init(): Failed to allocate memory for sprite]\n");
         return NULL;
     }
 
     // Initialize SDL_texture
-    sprite->texture = NULL;
+    s->texture = NULL;
 
     // Allocate memory for SDL_Rect
-    sprite->pos = malloc(sizeof(SDL_Rect));
-    if(sprite->pos == NULL){
+    s->pos = malloc(sizeof(SDL_Rect));
+    if(s->pos == NULL){
         printf("Error in sprite_init(): Failed to allocate memory for rect\n");
-        free(sprite);
+        free(s);
         return NULL;
     }
 
     // Set position information
-    sprite->pos->x = x;
-    sprite->pos->y = y;
-    sprite->pos->w = w;
-    sprite->pos->h = h;
+    s->pos->x = x;
+    s->pos->y = y;
+    s->pos->w = w;
+    s->pos->h = h;
 
     // Initialize rotation angle
-    sprite->angle = 0;
+    s->angle = 0;
 
-    return sprite;
+    return s;
 }
 
 _Bool sprite_set_renderer(struct sprite *target, SDL_Renderer *parent)
